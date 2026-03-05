@@ -1,0 +1,6 @@
+@use "tailwindcss";
+@use "styles/base/theme";
+@use "styles/base/typography";
+
+@custom-variant dark (&:where(.dark, .dark *));
+

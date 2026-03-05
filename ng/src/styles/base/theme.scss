@@ -1,0 +1,50 @@
+/**
+ * Design Tokens – Tailwind CSS v4
+ *
+ * In Tailwind v4 werden alle Custom-Tokens direkt per @theme in CSS definiert.
+ * Das ersetzt die tailwind.config.js vollständig.
+ *
+ * Verwendung in Templates: bg-surface, text-content-primary, border-border usw.
+ */
+
+@theme {
+  /* ── Surfaces ──────────────────────────────────────────────────── */
+  --color-surface-app:    #fcfcfc;   /* App-Hintergrund, Sidebar             */
+  --color-surface-card:   #ffffff;   /* Cards, Inputs, Modals                */
+  --color-surface-subtle: #f9fafb;   /* Read-only Felder, Code-Blöcke (gray-50) */
+  --color-surface-muted:  #f3f4f6;   /* Hover-States (gray-100)              */
+  --color-surface-dark:   #030712;   /* Verify-Seiten Hintergrund (gray-950) */
+
+  /* ── Border ────────────────────────────────────────────────────── */
+  --color-border:         #d1d5db;   /* Standard (gray-300)                  */
+  --color-border-subtle:  #e5e7eb;   /* Trennlinien, Cards (gray-200)        */
+  --color-border-faint:   #f3f4f6;   /* Card-interne Trennlinie (gray-100)   */
+
+  /* ── Content / Text ─────────────────────────────────────────────── */
+  --color-content-primary:   #111827; /* Überschriften, Labels (gray-900)    */
+  --color-content-secondary: #374151; /* Body-Text (gray-700)                */
+  --color-content-muted:     #6b7280; /* Beschreibungen (gray-500)           */
+  --color-content-placeholder: #9ca3af; /* Placeholder (gray-400)            */
+
+  /* ── Brand (Primary Action) ─────────────────────────────────────── */
+  --color-brand:            #111827;  /* Buttons, Akzente (gray-900)         */
+  --color-brand-hover:      #1f2937;  /* Button hover (gray-800)             */
+  --color-brand-fg:         #ffffff;  /* Text auf Brand-BG                   */
+
+  /* ── Feedback: Danger ───────────────────────────────────────────── */
+  --color-danger-bg:        #fef2f2;  /* red-50                              */
+  --color-danger-border:    #fecaca;  /* red-200                             */
+  --color-danger-text:      #b91c1c;  /* red-700                             */
+  --color-danger-text-soft: #dc2626;  /* red-600 (Inline-Fehler)             */
+
+  /* ── Feedback: Success ──────────────────────────────────────────── */
+  --color-success-bg:       #f0fdf4;  /* green-50                            */
+  --color-success-border:   #bbf7d0;  /* green-200                           */
+  --color-success-text:     #15803d;  /* green-700                           */
+
+  /* ── Feedback: Warning ──────────────────────────────────────────── */
+  --color-warning-bg:       #fffbeb;  /* amber-50                            */
+  --color-warning-border:   #fde68a;  /* amber-200                           */
+  --color-warning-text:     #b45309;  /* amber-700                           */
+  --color-warning-text-soft: #d97706; /* amber-600                           */
+}

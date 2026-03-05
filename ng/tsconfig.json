@@ -1,0 +1,71 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "preserve",
+    "baseUrl": "./",
+    "paths": {
+      "@ui": [
+        "./src/app/ui"
+      ],
+      "@ui/*": [
+        "./src/app/ui/*"
+      ],
+      "@api": [
+        "./src/app/api"
+      ],
+      "@api/*": [
+        "./src/app/api/*"
+      ],
+      "@core": [
+        "./src/app/core"
+      ],
+      "@core/*": [
+        "./src/app/core/*"
+      ],
+      "@forms": [
+        "./src/app/forms"
+      ],
+      "@forms/*": [
+        "./src/app/forms/*"
+      ],
+      "@routes": [
+        "./src/app/routes"
+      ],
+      "@routes/*": [
+        "./src/app/routes/*"
+      ],
+      "@signal": [
+        "./src/app/signal"
+      ],
+      "@signal/*": [
+        "./src/app/signal/*"
+      ]
+    }
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "typeCheckHostBindings": true,
+    "strictTemplates": true
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
+}

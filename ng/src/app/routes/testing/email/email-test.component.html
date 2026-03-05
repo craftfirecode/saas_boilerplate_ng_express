@@ -1,0 +1,9 @@
+<section>
+  <h6>E-Mail Test</h6>
+  <button uiButton variant="outline" [disabled]="status() === 'loading'" (click)="sendTestMail()">
+    {{ status() === 'loading' ? 'Wird gesendet...' : 'Test-Mail senden' }}
+  </button>
+  @if (message()) {
+    <p class="mt-2 text-sm">{{ message() }}</p>
+  }
+</section>

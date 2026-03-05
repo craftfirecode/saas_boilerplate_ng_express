@@ -1,0 +1,79 @@
+<div class="flex flex-col gap-4">
+
+  <!-- Hinweis-Banner -->
+  <div class="p-3 bg-danger-bg text-danger-text rounded-md text-sm border border-danger-border flex flex-col gap-1">
+    <p class="font-semibold">Gefahrenzone</p>
+    <p>Die Löschung deines Accounts ist <strong>unwiderruflich</strong>. Alle deine Daten, Ordner und Aufgaben werden dauerhaft gelöscht.</p>
+  </div>
+
+  @if (status() === 'sent') {
+    <!-- Nach Erfolg: nur Bestätigungs-Banner, kein Button mehr -->
+    <div role="status" aria-live="polite" class="p-3 bg-warning-bg text-warning-text rounded-md text-sm border border-warning-border">
+      ✉️ Bestätigungslink wurde an <strong>{{ currentEmail() }}</strong> gesendet. Bitte prüfe dein Postfach und klicke auf den Link in der E-Mail.
+    </div>
+
+  } @else if (status() === 'error') {
+    <div role="alert" aria-live="polite" class="p-3 bg-danger-bg text-danger-text rounded-md text-sm border border-danger-border">
+      {{ errorMessage() }}
+    </div>
+
+    <div class="flex justify-end">
+      <button uiButton variant="destructive" type="button" (click)="showForm.set(true)">
+        Account löschen
+      </button>
+    </div>
+
+  } @else if (!showForm()) {
+    <div class="flex justify-end">
+      <button uiButton variant="destructive" type="button" (click)="showForm.set(true)">
+        Account löschen
+      </button>
+    </div>
+
+  } @else {
+    <form
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+      novalidate
+      aria-label="Account löschen bestätigen"
+      class="flex flex-col gap-4"
+    >
+      <div class="flex flex-col gap-1">
+        <label for="delete-email" class="text-sm font-medium text-content-secondary">
+          Bestätige deine E-Mail-Adresse
+        </label>
+        <p class="text-xs text-content-muted">
+          Gib deine E-Mail-Adresse ein um die Löschung zu bestätigen.
+        </p>
+        <input
+          uiInput
+          id="delete-email"
+          type="email"
+          formControlName="email"
+          autocomplete="email"
+          [placeholder]="currentEmail()"
+          [attr.aria-invalid]="isInvalid()"
+          aria-describedby="delete-email-error"
+        />
+        @if (isInvalid()) {
+          <p id="delete-email-error" role="alert" class="text-xs text-danger-text-soft">
+            @if (form.controls.email.hasError('required')) { E-Mail-Adresse ist erforderlich. }
+            @else if (form.controls.email.hasError('email')) { Bitte eine gültige E-Mail-Adresse eingeben. }
+            @else if (form.controls.email.hasError('mismatch')) { Die E-Mail-Adresse stimmt nicht überein. }
+          </p>
+        }
+      </div>
+
+      <div class="flex justify-end gap-2">
+        <button uiButton variant="outline" type="button" (click)="showForm.set(false)" [disabled]="loading()">
+          Abbrechen
+        </button>
+        <button uiButton variant="destructive" type="submit" [disabled]="loading()">
+          {{ loading() ? 'Wird gesendet…' : 'Löschung beantragen' }}
+        </button>
+      </div>
+
+    </form>
+  }
+
+</div>

@@ -1,0 +1,55 @@
+<div class="min-h-screen flex items-center justify-center bg-surface-dark px-6">
+  <div class="w-full max-w-md bg-surface-card/5 border border-surface-card/10 rounded-2xl px-8 py-12 flex flex-col items-center gap-8 text-center">
+
+    @if (status() === 'loading') {
+      <div aria-live="polite" aria-busy="true" class="flex flex-col items-center gap-4">
+        <span class="text-4xl" aria-hidden="true">⏳</span>
+        <p class="text-white/70 text-base">Account wird gelöscht…</p>
+      </div>
+    }
+
+    @if (status() === 'success') {
+      <div role="status" aria-live="polite" class="flex flex-col items-center gap-4">
+        <span class="text-5xl" aria-hidden="true">🗑️</span>
+        <h1 class="text-2xl font-semibold text-white">Account gelöscht</h1>
+        <p class="text-white/70 text-sm leading-relaxed">{{ message() }}</p>
+        <p class="text-white/50 text-xs">Alle deine Daten wurden dauerhaft entfernt.</p>
+        <a
+          routerLink="/register"
+          class="mt-2 inline-block px-6 py-3 rounded-xl bg-white text-gray-950 font-semibold text-sm hover:bg-white/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+          Neuen Account erstellen
+        </a>
+      </div>
+    }
+
+    @if (status() === 'error') {
+      <div role="alert" aria-live="assertive" class="flex flex-col items-center gap-4">
+        <span class="text-5xl" aria-hidden="true">❌</span>
+        <h1 class="text-2xl font-semibold text-white">Link ungültig</h1>
+        <p class="text-white/70 text-sm leading-relaxed">{{ message() }}</p>
+        <a
+          routerLink="/protected/settings"
+          class="mt-2 inline-block px-6 py-3 rounded-xl bg-white text-gray-950 font-semibold text-sm hover:bg-white/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+          Zurück zu den Einstellungen
+        </a>
+      </div>
+    }
+
+    @if (status() === 'support') {
+      <div role="alert" aria-live="assertive" class="flex flex-col items-center gap-4">
+        <span class="text-5xl" aria-hidden="true">⚠️</span>
+        <h1 class="text-2xl font-semibold text-white">Fehler bei der Löschung</h1>
+        <p class="text-white/70 text-sm leading-relaxed">
+          Bei der Löschung deines Accounts ist ein unerwarteter Fehler aufgetreten.<br />
+          Bitte wende dich an den Support.
+        </p>
+        <a
+          routerLink="/protected/settings"
+          class="mt-2 inline-block px-6 py-3 rounded-xl bg-white text-gray-950 font-semibold text-sm hover:bg-white/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+          Zurück zu den Einstellungen
+        </a>
+      </div>
+    }
+
+  </div>
+</div>

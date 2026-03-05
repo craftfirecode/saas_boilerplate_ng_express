@@ -1,0 +1,74 @@
+<div class="max-w-3xl mx-auto px-4 py-10 flex flex-col gap-8">
+
+  <h1 class="text-2xl font-semibold text-content-primary">Einstellungen</h1>
+
+  <!-- Profil-Informationen -->
+  <section aria-labelledby="profile-heading">
+    <div class="bg-surface-card rounded-xl border border-border-subtle shadow-sm overflow-hidden">
+      <div class="px-6 py-5 border-b border-border-faint">
+        <h2 id="profile-heading" class="text-base font-semibold text-content-primary">Profil-Informationen</h2>
+        <p class="text-sm text-content-muted mt-0.5">Benutzername deines Accounts aktualisieren.</p>
+      </div>
+      <div class="px-6 py-6">
+        <app-username-change />
+      </div>
+    </div>
+  </section>
+
+  <!-- E-Mail-Adresse ändern -->
+  <section aria-labelledby="email-heading">
+    <div class="bg-surface-card rounded-xl border border-border-subtle shadow-sm overflow-hidden">
+      <div class="px-6 py-5 border-b border-border-faint">
+        <h2 id="email-heading" class="text-base font-semibold text-content-primary">E-Mail-Adresse ändern</h2>
+        <p class="text-sm text-content-muted mt-0.5">Du erhältst einen Bestätigungslink an deine <strong>aktuelle</strong> E-Mail-Adresse. Dort wird die neue Adresse zur Prüfung angezeigt.</p>
+      </div>
+      <div class="px-6 py-6">
+        <app-email-change />
+      </div>
+    </div>
+  </section>
+
+  <!-- Passwort ändern -->
+  <section aria-labelledby="password-heading">
+    <div class="bg-surface-card rounded-xl border border-border-subtle shadow-sm overflow-hidden">
+      <div class="px-6 py-5 border-b border-border-faint">
+        <h2 id="password-heading" class="text-base font-semibold text-content-primary">Passwort ändern</h2>
+        <p class="text-sm text-content-muted mt-0.5">Stelle sicher, dass dein Account ein langes, zufälliges Passwort verwendet.</p>
+      </div>
+      <div class="px-6 py-6">
+        <app-password-change />
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section aria-labelledby="faq-heading">
+    <div class="bg-surface-card rounded-xl border border-border-subtle shadow-sm overflow-hidden">
+      <div class="px-6 py-5 border-b border-border-faint">
+        <h2 id="faq-heading" class="text-base font-semibold text-content-primary">Häufige Fragen</h2>
+      </div>
+      <div class="px-6 py-4">
+        <app-accordion [items]="faqItems" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Account löschen -->
+  <section aria-labelledby="delete-heading">
+    <div class="bg-surface-card rounded-xl border border-danger-border shadow-sm overflow-hidden">
+      <div class="px-6 py-5 border-b border-danger-border/40">
+        <h2 id="delete-heading" class="text-base font-semibold text-danger-text">Account löschen</h2>
+        <p class="text-sm text-content-muted mt-0.5">Nach der Löschung werden alle Daten dauerhaft entfernt und können nicht wiederhergestellt werden.</p>
+      </div>
+      <div class="px-6 py-6">
+        <app-delete-account />
+      </div>
+    </div>
+  </section>
+
+  <!-- E-Mail Test -->
+  <section class="my-5">
+    <app-email-test />
+  </section>
+
+</div>

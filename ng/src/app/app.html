@@ -1,0 +1,69 @@
+@if (ready() && user) {
+  <div class="container-full mx-auto">
+    <div class="layout-grid min-h-screen"
+         [class.sidebar-open]="sidebarOpen()"
+         [class.sidebar-closed]="!sidebarOpen()">
+
+      <!-- Sidebar -->
+      <div class="sidebar flex flex-col justify-between h-screen border-r border-border bg-surface-app sticky top-0 overflow-hidden">
+        <nav class="p-5">
+          <layout-nav-brand>
+            Brand
+          </layout-nav-brand>
+          <ul class="flex flex-col gap-1">
+            <li>
+              <a uiButton variant="ghost"
+                 icon="true"
+                 class="w-full justify-start"
+                 routerLink="/protected">
+                <lucide-icon name="house"/>
+                Home
+              </a>
+            </li>
+            <li>
+              <a uiButton
+                 variant="ghost"
+                 icon="true"
+                 class="w-full justify-start"
+                 routerLink="/protected/settings">
+                <lucide-icon name="settings" />
+                Settings
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <div class="flex flex-col gap-3 p-5">
+          <div class="border-t border-border"></div>
+          <div class="flex gap-2 items-start">
+            <lucide-icon name="user" class="size-4" />
+            <div class="font-medium text-sm" [innerText]="auth.getUser()?.username"></div>
+          </div>
+          <button uiButton variant="destructive" size="sm" class="w-full"
+                  (click)="authLogOut()">
+            LogOut
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="min-w-0">
+        <div class="border-b border-border mb-5 flex items-center px-5 gap-2 h-16">
+          <button uiButton variant="ghost" size="icon"
+            (click)="toggleSidebar()"
+            [title]="sidebarOpen() ? 'Sidebar schließen' : 'Sidebar öffnen'">
+            <lucide-icon
+              [name]="sidebarOpen() ? 'panel-left-close' : 'panel-left-open'"
+              class="size-5" />
+          </button>
+        </div>
+        <div class="px-5">
+          <router-outlet/>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+} @else {
+  <router-outlet/>
+}

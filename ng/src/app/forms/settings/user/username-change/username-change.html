@@ -1,0 +1,39 @@
+<div class="flex gap-2">
+  <input
+    uiInput
+    id="username"
+    type="text"
+    [formControl]="usernameControl"
+    placeholder="Username"
+  />
+  <button uiButton (click)="updateUsername()" [disabled]="usernameControl.invalid || usernameControl.value === user?.username">
+    Speichern
+  </button>
+</div>
+
+@if (usernameControl.hasError('whitespace')) {
+  <p class="text-danger-text-soft text-xs">Keine Leerzeichen erlaubt.</p>
+}
+
+@switch (status()) {
+  @case ('success') {
+    <div class="p-3 bg-success-bg text-success-text rounded-md text-sm border border-success-border">
+      Erfolgreich.
+    </div>
+  }
+  @case ('taken') {
+    <div class="p-3 bg-danger-bg text-danger-text rounded-md text-sm border border-danger-border">
+      Name ist vergeben.
+    </div>
+  }
+  @case ('spaces') {
+    <div class="p-3 bg-danger-bg text-danger-text rounded-md text-sm border border-danger-border">
+      Keine Leerzeichen erlaubt.
+    </div>
+  }
+  @case ('error') {
+    <div class="p-3 bg-danger-bg text-danger-text rounded-md text-sm border border-danger-border">
+      Fehler bei der Übertragung.
+    </div>
+  }
+}
