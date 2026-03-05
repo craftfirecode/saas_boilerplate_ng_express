@@ -4,20 +4,6 @@ import { z } from 'zod';
  * Zentrale Validierungsregeln mit Zod – wiederverwendbar in allen Controllern.
  */
 
-// ─── Hilfsfunktion ────────────────────────────────────────────────────────────
-
-interface ParseResult<T> {
-  valid: boolean;
-  data?: T;
-  error?: string;
-}
-
-function parseSchema<T>(schema: z.ZodSchema<T>, value: unknown): ParseResult<T> {
-  const result = schema.safeParse(value);
-  if (result.success) return { valid: true, data: result.data };
-  return { valid: false, error: result.error.issues[0]?.message };
-}
-
 // ─── Schemas ──────────────────────────────────────────────────────────────────
 
 export const usernameSchema = z
@@ -63,16 +49,4 @@ export const emailChangeSchema = z.object({
   email: emailSchema,
 });
 
-// ─── Kompatibilitäts-Wrapper ──────────────────────────────────────────────────
 
-export function validateUsername(username: unknown): ParseResult<string> {
-  return parseSchema(usernameSchema, username);
-}
-
-export function validatePassword(password: unknown): ParseResult<string> {
-  return parseSchema(passwordSchema, password);
-}
-
-export function validateEmail(email: unknown): ParseResult<string> {
-  return parseSchema(emailSchema, email);
-}
