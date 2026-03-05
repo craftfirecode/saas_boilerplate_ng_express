@@ -1,11 +1,13 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.ts",
   "type": "module",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js",
+    "dev": "nodemon --exec tsx index.ts",
+    "start": "node --import tsx/esm index.ts",
+    "build": "tsc",
+    "start:dist": "node dist/index.js",
     "prisma": "prisma",
     "migrate": "npx prisma migrate deploy --schema=prisma/schema.prisma",
     "db:init": "npx prisma migrate dev --name init --schema=prisma/schema.prisma"
@@ -25,7 +27,16 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^25.3.3",
+    "@types/nodemailer": "^7.0.11",
     "nodemon": "^3.1.0",
-    "prisma": "^5.12.0"
+    "prisma": "^5.12.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
   }
 }

@@ -6,34 +6,32 @@ import { z } from 'zod';
 
 // ─── Hilfsfunktion ────────────────────────────────────────────────────────────
 
-/**
- * Führt ein Zod-Schema gegen einen Wert aus und gibt
- * das gewohnte { valid, error } Format zurück.
- * @template T
- * @param {z.ZodSchema<T>} schema
- * @param {unknown} value
- * @returns {{ valid: boolean, data?: T, error?: string }}
- */
-function parseSchema(schema, value) {
+interface ParseResult<T> {
+  valid: boolean;
+  data?: T;
+  error?: string;
+}
+
+function parseSchema<T>(schema: z.ZodSchema<T>, value: unknown): ParseResult<T> {
   const result = schema.safeParse(value);
   if (result.success) return { valid: true, data: result.data };
-  return { valid: false, error: result.error.errors[0].message };
+  return { valid: false, error: result.error.issues[0]?.message };
 }
 
 // ─── Schemas ──────────────────────────────────────────────────────────────────
 
 export const usernameSchema = z
-  .string({ required_error: 'Benutzername darf nicht leer sein.' })
+  .string({ error: 'Benutzername darf nicht leer sein.' })
   .min(1, 'Benutzername darf nicht leer sein.')
   .regex(/^\S+$/, 'Benutzername darf keine Leerzeichen enthalten.');
 
 export const passwordSchema = z
-  .string({ required_error: 'Passwort darf nicht leer sein.' })
+  .string({ error: 'Passwort darf nicht leer sein.' })
   .min(1, 'Passwort darf nicht leer sein.')
   .min(8, 'Passwort muss mindestens 8 Zeichen lang sein.');
 
 export const emailSchema = z
-  .string({ required_error: 'E-Mail-Adresse darf nicht leer sein.' })
+  .string({ error: 'E-Mail-Adresse darf nicht leer sein.' })
   .email('Ungültige E-Mail-Adresse.');
 
 /** Schema für die Registrierung (komplettes Body-Objekt) */
@@ -65,31 +63,16 @@ export const emailChangeSchema = z.object({
   email: emailSchema,
 });
 
-// ─── Kompatibilitäts-Wrapper (bestehende Controller bleiben unverändert) ──────
+// ─── Kompatibilitäts-Wrapper ──────────────────────────────────────────────────
 
-/**
- * Validiert einen Username.
- * @param {string} username
- * @returns {{ valid: boolean, error?: string }}
- */
-export function validateUsername(username) {
+export function validateUsername(username: unknown): ParseResult<string> {
   return parseSchema(usernameSchema, username);
 }
 
-/**
- * Validiert ein Passwort.
- * @param {string} password
- * @returns {{ valid: boolean, error?: string }}
- */
-export function validatePassword(password) {
+export function validatePassword(password: unknown): ParseResult<string> {
   return parseSchema(passwordSchema, password);
 }
 
-/**
- * Validiert eine E-Mail-Adresse.
- * @param {string} email
- * @returns {{ valid: boolean, error?: string }}
- */
-export function validateEmail(email) {
+export function validateEmail(email: unknown): ParseResult<string> {
   return parseSchema(emailSchema, email);
 }

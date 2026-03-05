@@ -1,10 +1,11 @@
-import express from "express";
-import { createServer } from "http";
-import cors from "cors";
-import dotenv from "dotenv";
+import express from 'express';
+import { createServer } from 'http';
+import cors from 'cors';
+import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 
 dotenv.config();
+
 const app = express();
 const server = createServer(app);
 
@@ -22,7 +23,7 @@ app.use('/folders', foldersRoutes);
 app.use('/users', userRoutes);
 app.use('/mail', mailRoutes);
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env['PORT'] ?? 4000;
 server.listen(PORT, () => {
   console.log(`🚀 Server läuft auf http://localhost:${PORT}`);
 });

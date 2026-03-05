@@ -1,5 +1,9 @@
 import { Router } from 'express';
-import { updateProfile, updatePassword, requestEmailUpdate, confirmEmailUpdate, requestAccountDeletion, confirmAccountDeletion, requestPasswordResetHandler, confirmPasswordResetHandler } from '../controllers/user.controller.js';
+import {
+  updateProfile, updatePassword, requestEmailUpdate, confirmEmailUpdate,
+  requestAccountDeletion, confirmAccountDeletion,
+  requestPasswordResetHandler, confirmPasswordResetHandler,
+} from '../controllers/user.controller.js';
 import { verifyAccess } from '../middleware/verifyAccessToken.js';
 
 const router = Router();
