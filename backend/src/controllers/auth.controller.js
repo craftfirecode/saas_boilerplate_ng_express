@@ -8,7 +8,7 @@ import {
   confirmUserVerified,
 } from '../services/user.service.js';
 import { sendVerificationMail } from '../services/mail.service.js';
-import { validateUsername, validatePassword } from '../utils/validators.js';
+import { registerSchema, loginSchema } from '../utils/validators.js';
 
 const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
 const ACCESS_MS = 15 * 60 * 1000;
@@ -26,16 +26,16 @@ function cookieOptions({ httpOnly = true, maxAge = THIRTY_DAYS_MS } = {}) {
 }
 
 export async function register(req, res) {
-  const { email, password } = req.body;
-  const username = req.body.username?.trim();
+  const parsed = registerSchema.safeParse({
+    username: req.body.username?.trim(),
+    email: req.body.email,
+    password: req.body.password,
+  });
+  if (!parsed.success) {
+    return res.status(400).json({ error: parsed.error.errors[0].message });
+  }
 
-  const usernameCheck = validateUsername(username);
-  if (!usernameCheck.valid) return res.status(400).json({ error: usernameCheck.error });
-
-  const passwordCheck = validatePassword(password);
-  if (!passwordCheck.valid) return res.status(400).json({ error: passwordCheck.error });
-
-  if (!email || !email.includes('@')) return res.status(400).json({ error: 'Ungültige E-Mail-Adresse.' });
+  const { username, email, password } = parsed.data;
 
   const isTaken = await checkUsernameExists(username);
   if (isTaken) return res.status(409).json({ error: 'Name ist vergeben.' });
@@ -64,10 +64,15 @@ export async function register(req, res) {
 }
 
 export async function login(req, res) {
-  const { email, password } = req.body;
+  const parsed = loginSchema.safeParse({
+    email: req.body.email,
+    password: req.body.password,
+  });
+  if (!parsed.success) {
+    return res.status(400).json({ error: parsed.error.errors[0].message });
+  }
 
-  if (!email || !password)
-    return res.status(400).json({ error: 'E-Mail und Passwort sind erforderlich.' });
+  const { email, password } = parsed.data;
 
   const user = await getUserByEmailAndPassword(email, password);
   if (!user) return res.status(401).json({ error: 'Ungültige Zugangsdaten.' });

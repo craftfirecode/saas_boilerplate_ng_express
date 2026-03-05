@@ -15,19 +15,19 @@ import {
   getUserByPasswordResetToken,
   resetPassword,
 } from '../services/user.service.js';
-import { validateUsername, validatePassword } from '../utils/validators.js';
+import { usernameSchema, passwordSchema, emailSchema, passwordResetSchema, emailChangeSchema } from '../utils/validators.js';
 import { signEmailChangeToken, verifyEmailChangeToken, signDeleteAccountToken, verifyDeleteAccountToken, signPasswordResetToken, verifyPasswordResetToken } from '../utils/token.js';
 import { sendEmailChangeMail, sendDeleteAccountMail, sendPasswordResetMail } from '../services/mail.service.js';
 
 // ─── Benutzername ─────────────────────────────────────────────────────────────
 export async function updateProfile(req, res) {
   const userId = Number(req.user?.sub);
-  const username = req.body.username?.trim();
-
   if (!userId) return res.status(401).json({ error: 'Unauthorized' });
 
-  const usernameCheck = validateUsername(username);
-  if (!usernameCheck.valid) return res.status(400).json({ error: usernameCheck.error });
+  const parsed = usernameSchema.safeParse(req.body.username?.trim());
+  if (!parsed.success) return res.status(400).json({ error: parsed.error.errors[0].message });
+
+  const username = parsed.data;
 
   const isTaken = await checkUsernameExists(username, userId);
   if (isTaken) return res.status(409).json({ error: 'Name ist vergeben.' });
@@ -48,16 +48,13 @@ export async function updatePassword(req, res) {
 
   const { currentPassword, newPassword, confirmPassword } = req.body;
 
-  if (!currentPassword || !newPassword || !confirmPassword)
+  if (!currentPassword)
     return res.status(400).json({ error: 'Alle Felder sind erforderlich.' });
 
-  if (newPassword !== confirmPassword)
-    return res.status(400).json({ error: 'Die neuen Passwörter stimmen nicht überein.' });
+  const parsed = passwordResetSchema.safeParse({ newPassword, confirmPassword });
+  if (!parsed.success) return res.status(400).json({ error: parsed.error.errors[0].message });
 
-  const passwordCheck = validatePassword(newPassword);
-  if (!passwordCheck.valid) return res.status(400).json({ error: passwordCheck.error });
-
-  const result = await changePassword(userId, currentPassword, newPassword);
+  const result = await changePassword(userId, currentPassword, parsed.data.newPassword);
 
   if (result.error === 'wrong_password')
     return res.status(422).json({ error: 'Das aktuelle Passwort ist falsch.' });
@@ -72,10 +69,10 @@ export async function requestEmailUpdate(req, res) {
   const userId = Number(req.user?.sub);
   if (!userId) return res.status(401).json({ error: 'Unauthorized' });
 
-  const newEmail = req.body.email?.trim().toLowerCase();
+  const parsed = emailChangeSchema.safeParse({ email: req.body.email?.trim().toLowerCase() });
+  if (!parsed.success) return res.status(400).json({ error: parsed.error.errors[0].message });
 
-  if (!newEmail || !newEmail.includes('@'))
-    return res.status(400).json({ error: 'Ungültige E-Mail-Adresse.' });
+  const newEmail = parsed.data.email;
 
   const taken = await checkEmailExists(newEmail, userId);
   if (taken)
@@ -197,10 +194,10 @@ export async function confirmAccountDeletion(req, res) {
 
 // ─── Passwort vergessen – Schritt 1: E-Mail eingeben → Reset-Mail senden ─────
 export async function requestPasswordResetHandler(req, res) {
-  const email = req.body.email?.trim().toLowerCase();
+  const parsed = emailSchema.safeParse(req.body.email?.trim().toLowerCase());
+  if (!parsed.success) return res.status(400).json({ error: parsed.error.errors[0].message });
 
-  if (!email || !email.includes('@'))
-    return res.status(400).json({ error: 'Ungültige E-Mail-Adresse.' });
+  const email = parsed.data;
 
   // Bewusst immer 200 zurückgeben – verhindert User-Enumeration
   const user = await getUserByEmail(email);
@@ -238,17 +235,11 @@ export async function confirmPasswordResetHandler(req, res) {
 
   const { newPassword, confirmPassword } = req.body;
 
-  if (!newPassword || !confirmPassword)
-    return res.status(400).json({ error: 'Alle Felder sind erforderlich.' });
-
-  if (newPassword !== confirmPassword)
-    return res.status(400).json({ error: 'Die Passwörter stimmen nicht überein.' });
-
-  const passwordCheck = validatePassword(newPassword);
-  if (!passwordCheck.valid) return res.status(400).json({ error: passwordCheck.error });
+  const parsed = passwordResetSchema.safeParse({ newPassword, confirmPassword });
+  if (!parsed.success) return res.status(400).json({ error: parsed.error.errors[0].message });
 
   try {
-    await resetPassword(user.id, newPassword);
+    await resetPassword(user.id, parsed.data.newPassword);
     return res.json({ message: 'Passwort erfolgreich zurückgesetzt. Du kannst dich jetzt einloggen.' });
   } catch (err) {
     console.error(err);
