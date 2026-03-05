@@ -10,8 +10,10 @@ Ein vollständiges SaaS-Starter-Projekt mit einem **Angular 21 Frontend** und ei
 | Technologie | Version | Zweck |
 |---|---|---|
 | Node.js + Express | ^4.19 | REST-API-Server |
+| TypeScript | ^5 | Typsicherheit (via `tsx`) |
 | Prisma ORM | ^5.12 | Datenbank-Zugriff & Migrationen |
 | SQLite | – | Datenbank (via Prisma) |
+| Zod | ^4 | Schema-Validierung (Request Bodies) |
 | jsonwebtoken | ^9.0 | JWT-Authentifizierung |
 | bcrypt | ^5.1 | Passwort-Hashing |
 | Nodemailer | ^8.0 | E-Mail-Versand |
@@ -130,10 +132,16 @@ saas-ng/
 
 ### Validierung
 
-- Zentrale Validierungslogik in `src/utils/validators.js`
-- **Username**: Darf nicht leer sein, keine Leerzeichen
-- **Passwort**: Mindestens 8 Zeichen, darf nicht leer sein
-- **E-Mail**: Muss `@` enthalten
+- Zentrale Validierungslogik in `src/utils/validators.ts` via **Zod**
+- Exportierte Schemas:
+  - `usernameSchema` – Darf nicht leer sein, keine Leerzeichen
+  - `passwordSchema` – Mindestens 8 Zeichen, darf nicht leer sein
+  - `emailSchema` – Muss eine gültige E-Mail-Adresse sein
+  - `registerSchema` – Kombiniert username + email + password (für Registrierung)
+  - `loginSchema` – Kombiniert email + password (für Login)
+  - `passwordResetSchema` – newPassword + confirmPassword inkl. Übereinstimmungs-Check
+  - `emailChangeSchema` – E-Mail-Änderungsanfrage
+- Alle Controller nutzen `schema.safeParse()` direkt – der erste Fehler wird als `{ error: "..." }` mit HTTP 400 zurückgegeben
 
 ### E-Mail-System (Nodemailer)
 
@@ -159,8 +167,9 @@ cd backend
 cp .env.exp .env        # .env anpassen
 npm install
 npm run db:init         # Erstmalig: Prisma-Migrationen ausführen
-npm run dev             # Entwicklungsserver mit nodemon (Port 4000)
-npm start               # Produktionsserver
+npm run dev             # Entwicklungsserver mit tsx (Port 4000)
+npm run build           # TypeScript nach dist/ kompilieren
+npm run start:dist      # Kompilierten Build starten
 ```
 
 #### Erforderliche `.env`-Variablen
