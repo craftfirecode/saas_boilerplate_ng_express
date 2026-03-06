@@ -94,18 +94,29 @@ Schema: `bg-{token}`, `text-{token}`, `border-{token}`
 **Font-Familie:** `Inter`, `Segoe UI`, `system-ui`, `sans-serif`  
 **Quelle:** `ng/src/styles/base/typography.scss`
 
-### 2.1 Fluid Type Scale
+### 2.0 Body / Fließtext
 
-Alle Heading-Größen nutzen CSS `clamp()` für flüssige Responsive-Skalierung.
+| Token (SCSS)       | Wert                                          | Verwendung              |
+|--------------------|-----------------------------------------------|-------------------------|
+| `$font-size-body`  | `1rem` (16px)                                 | Alle Body-Elemente      |
+| `$font-weight-body`| `400` (Regular)                               | p, li, label, input … |
+| `$line-height-body`| `1.6`                                         | Optimale Lesbarkeit     |
+| `$font-body`       | `Inter, Segoe UI, system-ui, sans-serif`      | Globaler Body-Font      |
 
-| Tag | Min Size | Max Size | Font-Weight | Line-Height | Letter-Spacing |
-|-----|----------|----------|-------------|-------------|----------------|
-| h1  | 32px (2rem)    | 64px (4rem)    | 800 | 1.1  | −0.03em  |
-| h2  | 26px (1.625rem)| 48px (3rem)    | 700 | 1.2  | −0.02em  |
-| h3  | 22px (1.375rem)| 36px (2.25rem) | 700 | 1.25 | −0.015em |
-| h4  | 18px (1.125rem)| 28px (1.75rem) | 600 | 1.3  | −0.01em  |
-| h5  | 16px (1rem)    | 22px (1.375rem)| 600 | 1.4  | −0.005em |
-| h6  | 14px (0.875rem)| 18px (1.125rem)| 600 | 1.5  | 0em      |
+Betrifft: `body`, `p`, `li`, `td`, `label`, `input`, `textarea`, `select`, `button`
+
+### 2.1 Fixed Type Scale
+
+Alle Headings verwenden **feste px-Werte** (kein Fluid/clamp). Alle Headings sind einheitlich **Bold (700)**.
+
+| Tag | Größe (rem) | Größe (px) | Font-Weight | Line-Height | Letter-Spacing | Margin-Bottom |
+|-----|-------------|------------|-------------|-------------|----------------|---------------|
+| h1  | 2.25rem     | 36px       | **700**     | 1.2         | −0.02em        | 1.25rem       |
+| h2  | 1.875rem    | 30px       | **700**     | 1.3         | −0.015em       | 1rem          |
+| h3  | 1.5rem      | 24px       | **700**     | 1.35        | −0.01em        | 0.875rem      |
+| h4  | 1.25rem     | 20px       | **700**     | 1.4         | −0.005em       | 0.75rem       |
+| h5  | 1.125rem    | 18px       | **700**     | 1.45        | 0em            | 0.625rem      |
+| h6  | 1rem        | 16px       | **700**     | 1.5         | 0em            | 0.5rem        |
 
 ### 2.2 Heading Colors
 
@@ -482,41 +493,43 @@ Dieses JSON kann direkt in Figma über das **Tokens Studio** Plugin (ehemals Fig
         "body":    { "value": "Inter, Segoe UI, system-ui, sans-serif", "type": "fontFamilies" }
       },
       "fontSize": {
-        "h1-min": { "value": "32",  "type": "fontSizes", "description": "clamp min" },
-        "h1-max": { "value": "64",  "type": "fontSizes", "description": "clamp max" },
-        "h2-min": { "value": "26",  "type": "fontSizes" },
-        "h2-max": { "value": "48",  "type": "fontSizes" },
-        "h3-min": { "value": "22",  "type": "fontSizes" },
-        "h3-max": { "value": "36",  "type": "fontSizes" },
-        "h4-min": { "value": "18",  "type": "fontSizes" },
-        "h4-max": { "value": "28",  "type": "fontSizes" },
-        "h5-min": { "value": "16",  "type": "fontSizes" },
-        "h5-max": { "value": "22",  "type": "fontSizes" },
-        "h6-min": { "value": "14",  "type": "fontSizes" },
-        "h6-max": { "value": "18",  "type": "fontSizes" },
-        "sm":     { "value": "14",  "type": "fontSizes", "description": "text-sm (Tailwind)" },
-        "xs":     { "value": "12",  "type": "fontSizes", "description": "text-xs (Tailwind)" },
-        "base":   { "value": "16",  "type": "fontSizes", "description": "text-base (Tailwind)" },
-        "2xl":    { "value": "24",  "type": "fontSizes", "description": "text-2xl – Page Title" }
+        "h1": { "value": "36", "type": "fontSizes", "description": "2.25rem" },
+        "h2": { "value": "30", "type": "fontSizes", "description": "1.875rem" },
+        "h3": { "value": "24", "type": "fontSizes", "description": "1.5rem" },
+        "h4": { "value": "20", "type": "fontSizes", "description": "1.25rem" },
+        "h5": { "value": "18", "type": "fontSizes", "description": "1.125rem" },
+        "h6": { "value": "16", "type": "fontSizes", "description": "1rem = body size" },
+        "body": { "value": "16", "type": "fontSizes", "description": "1rem – $font-size-body" },
+        "sm":   { "value": "14", "type": "fontSizes", "description": "text-sm (Tailwind)" },
+        "xs":   { "value": "12", "type": "fontSizes", "description": "text-xs (Tailwind)" },
+        "base": { "value": "16", "type": "fontSizes", "description": "text-base (Tailwind)" },
+        "2xl":  { "value": "24", "type": "fontSizes", "description": "text-2xl – Page Title" }
       },
       "fontWeight": {
-        "regular":   { "value": "400", "type": "fontWeights" },
+        "regular":   { "value": "400", "type": "fontWeights", "description": "Body ($font-weight-body)" },
         "medium":    { "value": "500", "type": "fontWeights" },
         "semibold":  { "value": "600", "type": "fontWeights" },
-        "bold":      { "value": "700", "type": "fontWeights" },
+        "bold":      { "value": "700", "type": "fontWeights", "description": "Alle Headings h1–h6" },
         "extrabold": { "value": "800", "type": "fontWeights" },
         "black":     { "value": "900", "type": "fontWeights" }
       },
       "lineHeight": {
-        "tight":   { "value": "1.1", "type": "lineHeights", "description": "h1" },
-        "snug":    { "value": "1.2", "type": "lineHeights", "description": "h2" },
-        "normal":  { "value": "1.5", "type": "lineHeights", "description": "h6, body" }
+        "body":    { "value": "1.6",  "type": "lineHeights", "description": "Body ($line-height-body)" },
+        "h1":      { "value": "1.2",  "type": "lineHeights" },
+        "h2":      { "value": "1.3",  "type": "lineHeights" },
+        "h3":      { "value": "1.35", "type": "lineHeights" },
+        "h4":      { "value": "1.4",  "type": "lineHeights" },
+        "h5":      { "value": "1.45", "type": "lineHeights" },
+        "h6":      { "value": "1.5",  "type": "lineHeights" }
       },
       "letterSpacing": {
-        "tightest": { "value": "-0.03em", "type": "letterSpacing", "description": "h1" },
-        "tight":    { "value": "-0.02em", "type": "letterSpacing", "description": "h2" },
-        "normal":   { "value": "0em",     "type": "letterSpacing" },
-        "wide":     { "value": "0.1em",   "type": "letterSpacing", "description": "Overline" }
+        "h1":     { "value": "-0.02em",  "type": "letterSpacing" },
+        "h2":     { "value": "-0.015em", "type": "letterSpacing" },
+        "h3":     { "value": "-0.01em",  "type": "letterSpacing" },
+        "h4":     { "value": "-0.005em", "type": "letterSpacing" },
+        "h5-h6":  { "value": "0em",      "type": "letterSpacing" },
+        "normal": { "value": "0em",      "type": "letterSpacing" },
+        "wide":   { "value": "0.1em",    "type": "letterSpacing", "description": "Overline" }
       }
     },
     "spacing": {
